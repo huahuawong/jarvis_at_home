@@ -8,10 +8,15 @@ import pyautogui
 from plyer import notification
 from bs4 import BeautifulSoup
 import requests
+import pywhatkit
+
 
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)
+engine.say("Hello I am your Waifu")
+engine.say("How can I help you?")
+engine.runAndWait()
 
 
 def input_query():
@@ -39,14 +44,14 @@ def speak_va(transcribed_query):
 
 
 def make_request(url):
-  response = requests.get(url)
-  return response.text
+    response = requests.get(url)
+    return response.text
 
 
 def activate_va():
     user_query = input_query()
     print('user query ....', user_query)
-    if 'time' in user_query:
+    if 'current time' in user_query or 'time now' in user_query:
         current_time = report_time()
         print(f"the current time is {current_time}")
         speak_va(f"the current time is {current_time}")
@@ -97,6 +102,11 @@ def activate_va():
         timeout=5
       )
       speak_va("here are the stats for COVID-19")
+
+    elif 'play' in user_query:
+        song = user_query.replace('play', '')
+        speak_va('Playing' + song)
+        pywhatkit.playonyt(song)
 
 
 while True:
